@@ -17,8 +17,6 @@ def index(request):
 
 def make_foursquare_request(request):
 
-    print request.POST
-
     if request.method == "POST":
 
         form = SearchForm(request.POST)
