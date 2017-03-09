@@ -1,0 +1,21 @@
+
+
+.content {
+	width: 60%;
+	margin: 0 auto;
+}
+
+.results {
+	width: 100%;
+	overflow: auto;
+}
+
+.search_results {
+	width: 60%;
+	float: left;
+}
+
+.previous_searches {
+	width: 30%;
+	float: right;
+}

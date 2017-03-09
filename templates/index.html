@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block js %}
+<script type="text/javascript">
+
+$(document).ready(function() {
+    
+	$(".previous_searches a").on("click", function(){
+		var query = $(this).data("query");
+		var location = $(this).data("location");
+		make_request({
+			'query': query,
+			'location': location,
+			'csrfmiddlewaretoken': getCookie('csrftoken')
+		});
+	});
+
+	$(".form").on("submit", function(){
+		event.preventDefault();
+		var values = $(".form").serialize();
+		make_request(values);
+	});
+
+	function make_request(data){
+		$.ajax({
+			method: "POST",
+			url: "{% url 'make-request' %}",
+			data: data,
+        	success:function(data){
+        		$(".search_results_as_t").html(data);
+        	}
+		});
+	}
+
+	function getCookie(name) {
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie !== '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	}
+
+});
+
+</script>
+{% endblock %}
+
+{% block content %}
+	
+	<div class="page_title">
+		<h2>Some Foursquare Client</h2>
+	</div>
+
+	<div class="search_form">
+
+		<form action="." method="POST" class="form">{% csrf_token %}
+			{{ form.query }}
+			{{ form.location }}
+			<input type="submit" name="submit" value="Search" />
+		</form>
+
+	</div>
+
+	<div class="results">
+
+		<div class="search_results">
+
+			<div><h3>Search Results</h3></div>
+			
+			<div class="search_results_as_t"></div>
+
+		</div>
+
+		<div class="previous_searches">
+
+			<div><h3>Previous Searches</h3></div>
+
+			{% for prev_search in previous_searches %}
+				<div>
+					<a data-query={{prev_search.query}} data-location={{prev_search.location}}>
+						<span>{{ prev_search.query }}</span> in <span>{{ prev_search.location }}</span>
+					</a>
+				</div>
+			{% endfor %}
+
+		</div>
+
+	</div>
+
+{% endblock %}

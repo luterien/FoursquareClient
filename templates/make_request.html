@@ -1,0 +1,14 @@
+			<table border="1">
+				<tr>
+					<th>Name</th>
+					<th>Phone Number</th>
+					<th>Checkin Count</th>
+				</tr>
+				{% for result in results %}
+					<tr>
+						<td>{{ result.name }}</td>
+						<td>{{ result.contact.formattedPhone }}</td>
+						<td>{{ result.stats.checkinsCount }}</td>
+					</tr>
+				{% endfor %}
+			</table>
